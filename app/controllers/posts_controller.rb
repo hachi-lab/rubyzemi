@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :login_check, only: [:new, :edit, :update, :destroy]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   # GET /posts
@@ -64,6 +65,15 @@ class PostsController < ApplicationController
   end
 
   private
+
+  #Login Check
+  def login_check
+  unless user_signed_in?
+    flash[:alert] = "Please Login"
+    redirect_to root_path
+  end
+  end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
